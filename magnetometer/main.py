@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import deque
+from datetime import datetime
 from enum import Enum
 from functools import partial
 from math import isfinite, nan, sqrt
@@ -9,7 +10,7 @@ from typing import Optional
 
 import typer
 from rich.columns import Columns
-from rich.console import Group, RenderableType
+from rich.console import Console, Group, RenderableType
 from rich.panel import Panel
 from textual.app import App
 from textual.widget import Widget
@@ -143,6 +144,7 @@ class MagnetometerApp(App):
         await self.bind("x", "zero_x", "Zero X")
         await self.bind("y", "zero_y", "Zero Y")
         await self.bind("z", "zero_z", "Zero Z")
+        await self.bind("s", "screenshot", "Screenshot")
 
         await self.bind("q", "quit", "Quit")
 
@@ -166,6 +168,13 @@ class MagnetometerApp(App):
         self.chart.zero_x()
         self.chart.zero_y()
         self.chart.zero_z()
+
+    def action_screenshot(self) -> None:
+        time = datetime.now().isoformat(timespec="seconds", sep=" ")
+        fn_svg = Path(f"magnetometer {time}.svg")
+        console = Console(record=True)
+        console.print(self)
+        console.save_svg(str(fn_svg), title=time)
 
 
 def version_callback(value: bool):
@@ -193,4 +202,5 @@ def main(
     log: str = str(log)
     if log == ".":
         log = ""
+
     MagnetometerApp.run(log=log)

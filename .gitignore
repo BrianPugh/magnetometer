@@ -232,3 +232,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+*.svg
+log.txt
+log.log
