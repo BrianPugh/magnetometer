@@ -49,3 +49,4 @@ This tool uses many awesome libraries that keep the implementation terse and the
 * [Textual](https://github.com/Textualize/textual) - Text User Interface framework for Python inspired by modern web development. Used for dynamic user input.
 * [Rich](https://github.com/Textualize/rich) - Python library for rich text and beautiful formatting in the terminal. Used for general UI text rendering.
 * [AsciiChartPy](https://github.com/kroitor/asciichart) - Nice-looking lightweight console ASCII line charts. Used for chart plotting. Modified to be `rich`-compatible.
+* [CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle) - A bundle of useful CircuitPython libraries ready to use from the filesystem.
