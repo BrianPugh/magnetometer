@@ -18,9 +18,10 @@ class Sensor(Device, Registry):
     def __pre_autoinit__(self):
         if self.implementation.name != "circuitpython":
             raise RuntimeError(
-                f"Board must be running CircuitPython, detected {self.device.implementation.name}."
+                f"Board must be running CircuitPython, detected {self.implementation.name}."
             )
         self.sync_dependencies("magnetometer", "dependencies/main")
+        self("from busio import I2C; import board")
         self(f"i2c = I2C(board.GP{self.scl}, board.GP{self.sda})")
 
     @abstractmethod
