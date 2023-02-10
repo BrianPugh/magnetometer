@@ -23,7 +23,7 @@ magnetometer = "magnetometer.main:app"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-belay = "^0.6"
+belay = "^0.17.0"
 textual = "^0.1.18"
 typer = {extras = ["all"], version = "^0.6"}
 autoregistry = "^0.8"
