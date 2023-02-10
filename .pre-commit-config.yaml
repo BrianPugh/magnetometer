@@ -103,6 +103,7 @@ repos:
     rev: 4.0.1
     hooks:
       - id: flake8
+        exclude: ^(magnetometer/sensors/)
         additional_dependencies:
           - flake8-2020
           - flake8-bugbear

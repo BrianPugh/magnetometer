@@ -1,41 +1,50 @@
 from abc import abstractmethod
 from typing import Callable, Tuple
 
-import pkg_resources
 from autoregistry import Registry
 from belay import Device
 
 
-class Sensor(Registry):
-    read: Callable[..., Tuple[float, float, float]]
-
+class Sensor(Device, Registry):
     # If Sensor has multiple measurement ranges, describe them here.
     # In microteslas.
     scales: list = []
 
-    def __init__(self, port, sda, scl):
-        self.device = Device(port)
+    def __init__(self, *args, scl, sda, **kwargs):
+        self.scl = scl
+        self.sda = sda
+        super().__init__(*args, **kwargs)
+
+    def __pre_autoinit__(self):
         if self.device.implementation.name != "circuitpython":
             raise RuntimeError(
                 f"Board must be running CircuitPython, detected {self.device.implementation.name}."
             )
-
-        board_path = pkg_resources.resource_filename("magnetometer", "board")
-        self.device.sync(board_path)
-
-        self.device(f"i2c = I2C(board.GP{scl}, board.GP{sda})")
-        self.read = self.init_sensor()
+        self.sync_dependencies("magnetometer", "dependencies/main")
+        self(f"i2c = I2C(board.GP{self.scl}, board.GP{self.sda})")
 
     @abstractmethod
-    def init_sensor(self) -> Callable[..., Tuple[float, float, float]]:
-        """Initialize sensor on-device and prepares ``read_sensor`` task.
+    def init_sensor() -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def read(scale=0, samples=16) -> Tuple[float, float, float]:
+        """Read sensor on-device.
 
         The object ``i2c`` is already initialized on-device.
 
+        Parameters
+        ----------
+        scale : int
+            Index into gauss range scale.
+            May or may not be used depending on sensor.
+        samples: int
+            Number of samples to average together per reading (oversampling).
+
         Returns
         -------
-        Callable[..., Tuple[float, float, float]]
-            Function that will read sensor and return an (x, y, z)
-            magnetic reading in microteslas.
+        Tuple[float, float, float]
+            (x, y, z) magnetic reading in microteslas.
         """
+
         raise NotImplementedError
