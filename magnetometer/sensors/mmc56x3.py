@@ -5,7 +5,7 @@ class MMC5603(Sensor):
     scales = [3000]
 
     @Sensor.setup(autoinit=True)
-    def init_sensor(self):
+    def init_sensor():
         from adafruit_mmc56x3 import MMC5603
 
         sensor = MMC5603(i2c)

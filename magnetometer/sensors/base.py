@@ -16,7 +16,7 @@ class Sensor(Device, Registry):
         super().__init__(*args, **kwargs)
 
     def __pre_autoinit__(self):
-        if self.device.implementation.name != "circuitpython":
+        if self.implementation.name != "circuitpython":
             raise RuntimeError(
                 f"Board must be running CircuitPython, detected {self.device.implementation.name}."
             )

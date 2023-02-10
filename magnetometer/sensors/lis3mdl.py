@@ -5,7 +5,7 @@ class LIS3MDL(Sensor):
     scales = [400, 800, 1200, 1600]
 
     @Sensor.setup(autoinit=True)
-    def init_sensor(self):
+    def init_sensor():
         from adafruit_lis3mdl import LIS3MDL
 
         sensor = LIS3MDL(i2c)
