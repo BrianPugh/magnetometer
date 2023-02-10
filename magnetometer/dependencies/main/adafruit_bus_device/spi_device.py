@@ -12,8 +12,8 @@
 import time
 
 try:
-    from types import TracebackType
     from typing import Optional, Type
+    from types import TracebackType
 
     # Used only for type annotations.
     from busio import SPI
@@ -77,7 +77,7 @@ class SPIDevice:
         baudrate: int = 100000,
         polarity: int = 0,
         phase: int = 0,
-        extra_clocks: int = 0,
+        extra_clocks: int = 0
     ) -> None:
         self.spi = spi
         self.baudrate = baudrate

@@ -69,3 +69,14 @@ exclude_lines = [
 exclude_dirs = [
     "tests",
 ]
+
+[tool.belay]
+dependencies_path = "magnetometer/dependencies"
+
+[tool.belay.dependencies]
+adafruit_bus_device = "https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/tree/main/adafruit_bus_device"
+adafruit_lis2mdl = "https://github.com/adafruit/Adafruit_CircuitPython_LIS2MDL/blob/main/adafruit_lis2mdl.py"
+adafruit_lis3mdl = "https://github.com/adafruit/Adafruit_CircuitPython_LIS3MDL/blob/main/adafruit_lis3mdl.py"
+adafruit_mmc56x3 = "https://github.com/adafruit/Adafruit_CircuitPython_MMC56x3/blob/main/adafruit_mmc56x3.py"
+adafruit_register = "https://github.com/adafruit/Adafruit_CircuitPython_Register/tree/main/adafruit_register"
+adafruit_tlv493d = "https://github.com/adafruit/Adafruit_CircuitPython_TLV493D/blob/main/adafruit_tlv493d.py"
