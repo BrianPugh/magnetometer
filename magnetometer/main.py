@@ -187,7 +187,7 @@ def version_callback(value: bool):
 def main(
     port: str = Arg(help="CircuitPython device communication port."),
     sda: int = Opt(0, help="Device I2C SDA GPIO number."),
-    scl: int = Opt(1, help="Device I2C SDA GPIO number."),
+    scl: int = Opt(1, help="Device I2C SCL GPIO number."),
     sensor_name: SensorEnum = Opt(
         "lis3mdl", "--sensor", case_sensitive=False, help="Sensor Type."
     ),
@@ -197,7 +197,7 @@ def main(
     log: Path = Opt("", help="Filename to write debugging logs."),
 ):
     global sensor
-    sensor = Sensor[sensor_name.value](port, sda, scl)
+    sensor = Sensor[sensor_name.value](port, sda=sda, scl=scl)
 
     log: str = str(log)
     if log == ".":

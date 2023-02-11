@@ -30,12 +30,18 @@ Implementation Notes
 """
 
 from time import sleep
-
+from micropython import const
 from adafruit_bus_device.i2c_device import I2CDevice
+from adafruit_register.i2c_struct import UnaryStruct, ROUnaryStruct
 from adafruit_register.i2c_bit import RWBit
 from adafruit_register.i2c_bits import RWBits
-from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
-from micropython import const
+
+try:
+    from typing import Tuple
+    from typing_extensions import Literal
+    from busio import I2C
+except ImportError:
+    pass
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_LIS2MDL.git"
@@ -158,7 +164,7 @@ class LIS2MDL:  # pylint: disable=too-many-instance-attributes
     _y_offset = UnaryStruct(OFFSET_Y_REG_L, "<h")
     _z_offset = UnaryStruct(OFFSET_Z_REG_L, "<h")
 
-    def __init__(self, i2c):
+    def __init__(self, i2c: I2C) -> None:
         self.i2c_device = I2CDevice(i2c, _ADDRESS_MAG)
 
         if self._device_id != 0x40:
@@ -166,7 +172,7 @@ class LIS2MDL:  # pylint: disable=too-many-instance-attributes
 
         self.reset()
 
-    def reset(self):
+    def reset(self) -> None:
         """Reset the sensor to the default state set by the library"""
         self._soft_reset = True
         sleep(0.100)
@@ -183,7 +189,7 @@ class LIS2MDL:  # pylint: disable=too-many-instance-attributes
         sleep(0.030)  # sleep 20ms to allow measurements to stabilize
 
     @property
-    def magnetic(self):
+    def magnetic(self) -> Tuple[float, float, float]:
         """The processed magnetometer sensor values.
         A 3-tuple of X, Y, Z axis values in microteslas that are signed floats.
         """
@@ -195,12 +201,12 @@ class LIS2MDL:  # pylint: disable=too-many-instance-attributes
         )
 
     @property
-    def data_rate(self):
+    def data_rate(self) -> Literal[0x00, 0x01, 0x02, 0x03]:
         """The magnetometer update rate."""
         return self._data_rate
 
     @data_rate.setter
-    def data_rate(self, value):
+    def data_rate(self, value: Literal[0x00, 0x01, 0x02, 0x03]) -> None:
         if not value in (
             DataRate.Rate_10_HZ,
             DataRate.Rate_20_HZ,
@@ -211,31 +217,31 @@ class LIS2MDL:  # pylint: disable=too-many-instance-attributes
         self._data_rate = value
 
     @property
-    def interrupt_threshold(self):
+    def interrupt_threshold(self) -> float:
         """The threshold (in microteslas) for magnetometer interrupt generation. Given value is
         compared against all axes in both the positive and negative direction"""
         return self._interrupt_threshold * _MAG_SCALE
 
     @interrupt_threshold.setter
-    def interrupt_threshold(self, value):
+    def interrupt_threshold(self, value: float) -> None:
         if value < 0:
             value = -value
         self._interrupt_threshold = int(value / _MAG_SCALE)
 
     @property
-    def interrupt_enabled(self):
+    def interrupt_enabled(self) -> bool:
         """Enable or disable the magnetometer interrupt"""
         return self._int_enable
 
     @interrupt_enabled.setter
-    def interrupt_enabled(self, val):
+    def interrupt_enabled(self, val: bool) -> None:
         self._x_int_enable = val
         self._y_int_enable = val
         self._z_int_enable = val
         self._int_enable = val
 
     @property
-    def faults(self):
+    def faults(self) -> Tuple[bool, bool, bool, bool, bool, bool, bool]:
         """A tuple representing interrupts on each axis in a positive and negative direction
         ``(x_hi, y_hi, z_hi, x_low, y_low, z_low, int_triggered)``"""
         int_status = self._int_source
@@ -250,31 +256,31 @@ class LIS2MDL:  # pylint: disable=too-many-instance-attributes
         return (x_hi, y_hi, z_hi, x_low, y_low, z_low, int_triggered)
 
     @property
-    def x_offset(self):
+    def x_offset(self) -> float:
         """An offset for the X-Axis to subtract from the measured value to correct
         for magnetic interference"""
         return self._x_offset * _MAG_SCALE
 
     @x_offset.setter
-    def x_offset(self, value):
+    def x_offset(self, value: float) -> None:
         self._x_offset = int(value / _MAG_SCALE)
 
     @property
-    def y_offset(self):
+    def y_offset(self) -> float:
         """An offset for the Y-Axis to subtract from the measured value to correct
         for magnetic interference"""
         return self._y_offset * _MAG_SCALE
 
     @y_offset.setter
-    def y_offset(self, value):
+    def y_offset(self, value: float) -> None:
         self._y_offset = int(value / _MAG_SCALE)
 
     @property
-    def z_offset(self):
+    def z_offset(self) -> float:
         """An offset for the Z-Axis to subtract from the measured value to correct
         for magnetic interference"""
         return self._z_offset * _MAG_SCALE
 
     @z_offset.setter
-    def z_offset(self, value):
+    def z_offset(self, value: float) -> None:
         self._z_offset = int(value / _MAG_SCALE)

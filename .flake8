@@ -19,6 +19,8 @@ exclude =
     .env
     venv
     .venv
+    magnetometer/dependencies
+    magnetometer/sensors
 
 extend-immutable-calls =
     Argument

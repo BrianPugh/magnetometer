@@ -28,15 +28,13 @@ Implementation Notes
 """
 
 import time
-
-from adafruit_bus_device import i2c_device
-from adafruit_register.i2c_bit import RWBit
-from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
 from micropython import const
+from adafruit_bus_device import i2c_device
+from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
+from adafruit_register.i2c_bit import RWBit
 
 try:
     from typing import Tuple
-
     from busio import I2C
 except ImportError:
     pass
@@ -178,7 +176,7 @@ class MMC5603:
 
     @property
     def continuous_mode(self) -> bool:
-        """Whether or not to put the chip in continuous mode - be sure
+        """Whether or not to put the chip in continous mode - be sure
         to set the data_rate as well!
         """
         return self._ctrl2_cache & 0x10

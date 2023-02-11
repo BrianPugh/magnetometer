@@ -27,16 +27,14 @@ Implementation Notes
 * Adafruit's Register library: https://github.com/adafruit/Adafruit_CircuitPython_Register
 """
 from time import sleep
-
-from adafruit_bus_device import i2c_device
-from adafruit_register.i2c_bit import RWBit
-from adafruit_register.i2c_bits import RWBits
-from adafruit_register.i2c_struct import ROUnaryStruct, Struct
 from micropython import const
+from adafruit_bus_device import i2c_device
+from adafruit_register.i2c_struct import ROUnaryStruct, Struct
+from adafruit_register.i2c_bits import RWBits
+from adafruit_register.i2c_bit import RWBit
 
 try:
-    from typing import Iterable, Optional, Tuple, Union
-
+    from typing import Iterable, Tuple, Union, Optional
     from busio import I2C
 except ImportError:
     pass
@@ -70,7 +68,7 @@ class CV:
     def add_values(
         cls, value_tuples: Iterable[Tuple[str, int, Union[int, str], Optional[int]]]
     ):
-        "creates CV entries"
+        "creates CV entires"
         cls.string = {}
         cls.lsb = {}
 

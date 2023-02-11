@@ -10,12 +10,12 @@
 import time
 
 try:
-    from types import TracebackType
     from typing import Optional, Type
+    from types import TracebackType
+    from circuitpython_typing import ReadableBuffer, WriteableBuffer
 
     # Used only for type annotations.
     from busio import I2C
-    from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError:
     pass
 
@@ -109,7 +109,7 @@ class I2CDevice:
         out_start: int = 0,
         out_end: Optional[int] = None,
         in_start: int = 0,
-        in_end: Optional[int] = None,
+        in_end: Optional[int] = None
     ) -> None:
         """
         Write the bytes from ``out_buffer`` to the device, then immediately

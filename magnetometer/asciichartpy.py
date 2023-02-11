@@ -151,7 +151,6 @@ def plot(series: list, cfg: Optional[dict] = None):
         result[rows - scaled(d0)][offset - 1] = symbols[0]
 
     for i in range(0, len(series)):
-
         color = colors[i % len(colors)]
 
         # plot the line

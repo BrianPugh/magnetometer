@@ -29,13 +29,11 @@ Implementation Notes
 """
 
 import struct
-
 import adafruit_bus_device.i2c_device as i2cdevice
 from micropython import const
 
 try:
     from typing import Tuple
-
     from busio import I2C
 except ImportError:
     pass
@@ -180,4 +178,4 @@ class TLV493D:
     def _unpack_and_scale(top: int, bottom: int) -> float:
         binval = struct.unpack_from(">h", bytearray([top, bottom]))[0]
         binval = binval >> 4
-        return binval * 0.098 * 1000
+        return binval * 98.0
